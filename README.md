@@ -1,12 +1,10 @@
 # Rack::Attack::RateLimit
 
-Add rate limit headers for Rack::Attack throttles.
+Add rate limit headers for [Rack::Attack](https://github.com/kickstarter/rack-attack) throttles.
 
 ## Installation
 
-Install or add to your gem file, the [rack-attack](http://rubygems.org/gems/rack-attack) gem and the [rack-attack-rate-limit](javascript:;) gem. 
-
-Gemfile:
+Install or add to your gem file:
 
 ```ruby
 gem install 'rack-attack'
