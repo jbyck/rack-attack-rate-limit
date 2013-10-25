@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jasonbyck@gmail.com"]
   spec.description   = %q{ Add RateLimit headers for Rack::Attack throttling }
   spec.summary       = %q{ Add RateLimit headers for Rack::Attack throttling }
-  spec.homepage      = "https://github.com/quandl/rack-attack-rate-limit"
+  spec.homepage      = "https://github.com/jbyck/rack-attack-rate-limit"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
