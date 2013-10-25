@@ -4,12 +4,12 @@ describe Rack::Attack::RateLimit do
   
   include Rack::Test::Methods
   
-  let(:namespace) { 'rack_attack_throttle' }
+  let(:throttle) { 'rack_attack_throttle' }
   
   let(:app) do
-    use_namespace = namespace
+    use_throttle = throttle
     Rack::Builder.new {
-      use Rack::Attack::RateLimit, namespace: use_namespace
+      use Rack::Attack::RateLimit, throttle: use_throttle
       run lambda { |env| [200, {}, 'Hello, World!'] }
     }.to_app
     
@@ -35,7 +35,7 @@ describe Rack::Attack::RateLimit do
     let(:request_count) { (1..(request_limit-10)).to_a.sample }
     
     let(:rack_attack_throttle_data) do
-      { "#{namespace}" => { count: request_count, limit: request_limit } }
+      { "#{throttle}" => { count: request_count, limit: request_limit } }
     end
     
     before(:each) do

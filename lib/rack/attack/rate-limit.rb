@@ -31,7 +31,11 @@ module Rack
       #
       # Returns hash
       def default_options
-        { namespace: 'throttle' }
+        { throttle: 'throttle' }
+      end
+      
+      def throttle
+        options[:throttle] || ''
       end
     
       # Return hash of headers with Rate Limiting data
@@ -53,7 +57,7 @@ module Rack
       #
       # Returns Fixnum
       def rate_limit_limit(env)
-        env[rack_attack_key][options[:namespace]][:limit]
+        env[rack_attack_key][throttle][:limit]
       end
   
       # RateLimit remaining request from Rack::Attack
@@ -62,7 +66,7 @@ module Rack
       #
       # Returns Fixnum
       def rate_limit_remaining(env)
-        rate_limit_limit(env) - env[rack_attack_key][options[:namespace]][:count]
+        rate_limit_limit(env) - env[rack_attack_key][throttle][:count]
       end
       
       # Rate Limit available method for Rack::Attack provider
@@ -72,7 +76,7 @@ module Rack
       #
       # Returns boolean 
       def rate_limit_available?(env)
-        env.key?(rack_attack_key) and env[rack_attack_key].key?(options[:namespace])
+        env.key?(rack_attack_key) and env[rack_attack_key].key?(throttle)
       end
   
     end

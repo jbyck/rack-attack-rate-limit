@@ -4,7 +4,7 @@ Include RateLimit headers from Rack::Attack throttles.
 
 ## Installation
 
-Install the [rack-attack](http://rubygems.org/gems/rack-attack) gem and rack-attack-rate-limit.
+Install or add to your gem file, the [rack-attack](http://rubygems.org/gems/rack-attack) gem and the [rack-attack-rate-limit](javascript:;) gem. 
 
 Gemfile:
 
@@ -14,12 +14,9 @@ gem install 'rack-attack-rate-limit'
 ```
 
 And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rack-attack-ratelimit
+```shell
+bundle
+```
 
 ## Usage
 
@@ -34,6 +31,7 @@ end
 To include rate limit headers for this throttle, include the Rack::Attack::RateLimit middleware
 
 For Rails 3+:
+
 ```ruby
 config.middleware.use Rack::Attack::RateLimit, throttle: 'my_throttle'
 ```
