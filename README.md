@@ -1,6 +1,6 @@
 # Rack::Attack::RateLimit
 
-Include RateLimit headers from Rack::Attack throttles.
+Add rate limit headers for Rack::Attack throttles.
 
 ## Installation
 
