@@ -4,12 +4,18 @@ Add rate limit headers for [Rack::Attack](https://github.com/kickstarter/rack-at
 
 ## Installation
 
-Install or add to your gem file:
+Install the gem:
 
-```ruby
-gem install 'rack-attack'
+```shell
 gem install 'rack-attack-rate-limit'
 ```
+
+In your gemfile:
+```ruby
+gem 'rack-attack-rate-limit', require: 'rack/attack/rate-limit', git: 'git@githucb.com:jbyck/rack-attack-rate-limit.git'
+```
+
+
 
 And then execute:
 ```shell
