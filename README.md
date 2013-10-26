@@ -1,5 +1,7 @@
 # Rack::Attack::RateLimit
 
+[![Build Status](https://travis-ci.org/jbyck/rack-attack-rate-limit.png?branch=master)](https://travis-ci.org/jbyck/rack-attack-rate-limit)
+
 Add rate limit headers for [Rack::Attack](https://github.com/kickstarter/rack-attack) throttles.
 
 ## Installation
