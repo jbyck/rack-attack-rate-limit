@@ -1,7 +1,7 @@
 module Rack
-  module Attack
+  class Attack
     class RateLimit
-      VERSION = "0.1.0"
+      VERSION = '0.1.0'
     end
   end
 end
