@@ -52,6 +52,7 @@ module Rack
       def add_rate_limit_headers!(headers, env)
         headers['X-Rate-Limit-Limit']      = rate_limit_limit(env).to_s
         headers['X-Rate-Limit-Remaining']  = rate_limit_remaining(env).to_s
+        headers['X-Rate-Limit-Period']     = rate_limit_period(env).to_s
         headers
       end
 
@@ -64,6 +65,15 @@ module Rack
       # Returns Fixnum
       def rate_limit_limit(env)
         env[rack_attack_key][throttle][:limit]
+      end
+
+      # Rate-Period request limit from Rack::Attack
+      #
+      # env - Hash
+      #
+      # Returns Fixnum
+      def rate_limit_period(env)
+        env[rack_attack_key][throttle][:period]
       end
 
       # Rate-Limit remaining requests from Rack::Attack
