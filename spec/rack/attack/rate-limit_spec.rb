@@ -15,7 +15,6 @@ describe Rack::Attack::RateLimit do
 
   end
 
-
   context 'Throttle data not present from Rack::Attack' do
 
     before(:each) do
@@ -25,6 +24,7 @@ describe Rack::Attack::RateLimit do
     it 'should not create Rate-Limit headers' do
       last_response.header.key?('X-Rate-Limit-Limit').should be false
       last_response.header.key?('X-Rate-Limit-Remaining').should be false
+      last_response.header.key?('X-Rate-Limit-Period').should be false
     end
 
   end
@@ -35,7 +35,7 @@ describe Rack::Attack::RateLimit do
     let(:request_count) { (1..(request_limit-10)).to_a.sample }
 
     let(:rack_attack_throttle_data) do
-      { "#{throttle}" => { count: request_count, limit: request_limit } }
+      { "#{throttle}" => { count: request_count, limit: request_limit, period: 60 } }
     end
 
     before(:each) do
@@ -43,8 +43,10 @@ describe Rack::Attack::RateLimit do
     end
 
     it 'should include Rate-Limit headers' do
+      p last_response.header
       last_response.header.key?('X-Rate-Limit-Limit').should be true
       last_response.header.key?('X-Rate-Limit-Remaining').should be true
+      last_response.header.key?('X-Rate-Limit-Period').should be true
     end
 
     it 'should return correct rate limit in header' do
@@ -53,6 +55,10 @@ describe Rack::Attack::RateLimit do
 
     it 'should return correct remaining calls in header' do
       last_response.header['X-Rate-Limit-Remaining'].to_i.should eq (request_limit-request_count)
+    end
+
+    it 'should return correct period in header' do
+      last_response.header['X-Rate-Limit-Period'].to_i.should eq 60
     end
   end
 
