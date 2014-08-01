@@ -6,7 +6,7 @@ require 'rack/attack/rate-limit'
 
 RSpec::configure do |config|
 
-  config.treat_symbols_as_metadata_keys_with_true_values = true
   config.formatter = :documentation
   config.tty = true
+  config.color = true
 end
