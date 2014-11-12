@@ -46,9 +46,9 @@ Currently, Rack::Attack::RateLimit can only be configured to return rate limit h
 
 Rate limit headers are:
 
-* 'X-Rate-Limit-Limit' - The total number of requests allowed.
-* 'X-Rate-Limit-Remaining' - The number of remaining requests.
-* 'X-Rate-Limit-Period' - The time period, in seconds, that the X-Rate-Limit-Limit applies to. 
+* 'X-RateLimit-Limit' - The total number of requests allowed.
+* 'X-RateLimit-Remaining' - The number of remaining requests.
+* 'X-RateLimit-Period' - The time period, in seconds, that the X-RateLimit-Limit applies to. 
 
 ## Contributing
 

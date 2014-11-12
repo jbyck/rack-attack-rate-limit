@@ -21,10 +21,10 @@ describe Rack::Attack::RateLimit do
       get '/'
     end
 
-    it 'should not create Rate-Limit headers' do
-      last_response.header.key?('X-Rate-Limit-Limit').should be false
-      last_response.header.key?('X-Rate-Limit-Remaining').should be false
-      last_response.header.key?('X-Rate-Limit-Period').should be false
+    it 'should not create RateLimit headers' do
+      last_response.header.key?('X-RateLimit-Limit').should be false
+      last_response.header.key?('X-RateLimit-Remaining').should be false
+      last_response.header.key?('X-RateLimit-Period').should be false
     end
 
   end
@@ -42,23 +42,23 @@ describe Rack::Attack::RateLimit do
       get "/", {}, { "#{Rack::Attack::RateLimit::RACK_ATTACK_KEY}" => rack_attack_throttle_data }
     end
 
-    it 'should include Rate-Limit headers' do
+    it 'should include RateLimit headers' do
       p last_response.header
-      last_response.header.key?('X-Rate-Limit-Limit').should be true
-      last_response.header.key?('X-Rate-Limit-Remaining').should be true
-      last_response.header.key?('X-Rate-Limit-Period').should be true
+      last_response.header.key?('X-RateLimit-Limit').should be true
+      last_response.header.key?('X-RateLimit-Remaining').should be true
+      last_response.header.key?('X-RateLimit-Period').should be true
     end
 
     it 'should return correct rate limit in header' do
-      last_response.header['X-Rate-Limit-Limit'].to_i.should eq request_limit
+      last_response.header['X-RateLimit-Limit'].to_i.should eq request_limit
     end
 
     it 'should return correct remaining calls in header' do
-      last_response.header['X-Rate-Limit-Remaining'].to_i.should eq (request_limit-request_count)
+      last_response.header['X-RateLimit-Remaining'].to_i.should eq (request_limit-request_count)
     end
 
     it 'should return correct period in header' do
-      last_response.header['X-Rate-Limit-Period'].to_i.should eq 60
+      last_response.header['X-RateLimit-Period'].to_i.should eq 60
     end
   end
 
