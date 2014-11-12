@@ -41,7 +41,7 @@ module Rack
       end
 
       def throttle
-        options[:throttle] || ''
+        Array(options[:throttle]) || []
       end
 
       # Return hash of headers with Rate Limiting data
@@ -50,9 +50,12 @@ module Rack
       #
       # Returns hash
       def add_rate_limit_headers!(headers, env)
-        headers['X-RateLimit-Limit']      = rate_limit_limit(env).to_s
-        headers['X-RateLimit-Remaining']  = rate_limit_remaining(env).to_s
-        headers['X-RateLimit-Period']     = rate_limit_period(env).to_s
+        throttle_data = throttle_data_closest_to_limit(env)
+
+        headers['X-RateLimit-Limit']      = rate_limit_limit(throttle_data).to_s
+        headers['X-RateLimit-Remaining']  = rate_limit_remaining(throttle_data).to_s
+        headers['X-RateLimit-Period']     = rate_limit_period(throttle_data).to_s
+
         headers
       end
 
@@ -63,8 +66,8 @@ module Rack
       # env - Hash
       #
       # Returns Fixnum
-      def rate_limit_limit(env)
-        env[rack_attack_key][throttle][:limit]
+      def rate_limit_limit(throttle_data)
+        throttle_data[:limit]
       end
 
       # Rate-Period request limit from Rack::Attack
@@ -81,18 +84,50 @@ module Rack
       # env - Hash
       #
       # Returns Fixnum
-      def rate_limit_remaining(env)
-        rate_limit_limit(env) - env[rack_attack_key][throttle][:count]
+      def rate_limit_period(env)
+        env[rack_attack_key][throttle][:period]
+      end
+
+      # RateLimit remaining requests from Rack::Attack
+      #
+      # env - Hash
+      #
+      # Returns Fixnum
+      def rate_limit_remaining(throttle_data)
+        rate_limit_limit(throttle_data) - throttle_data[:count]
       end
 
       # Rate Limit available method for Rack::Attack provider
-      # Checks the key identifed by options[:namespace] under the rack.attak.throttle_data env hash key
+      # Checks that at least one of the keys provided by the user are in the rack.attack.throttle_data env hash key
       #
       # env - Hash
       #
       # Returns boolean
       def rate_limit_available?(env)
-        env.key?(rack_attack_key) && env[rack_attack_key].key?(throttle)
+        env.key?(rack_attack_key) && (env[rack_attack_key].keys & throttle).any?
+      end
+
+      # Throttle Data of Interest
+      # Filters the rack.attack.throttle_data env hash key for the throttle names provided by the user
+      #
+      # env - Hash
+      #
+      # Returns Hash
+      def throttle_data_of_interest(env)
+        env[rack_attack_key].select { |k, _v| throttle.include?(k) }
+      end
+
+      # Throttle Data Closest to Limit
+      # Selects the hash in throttle_data_of_interest where the user is closest to the limit
+      #
+      # env - Hash
+      #
+      # Returns Hash
+      def throttle_data_closest_to_limit(env)
+        min_array = throttle_data_of_interest(env).min_by { |_k, v| v[:limit] - v[:count] }
+        # The min_by method returns an array of the form [key, value]
+        # We only need the values
+        min_array.last
       end
     end
   end
