@@ -1,5 +1,9 @@
 # rack-attack-rate-limit changelog
 
+## Unreleased
+
+* Set the 'X-RateLimit-Reset' header to the timestamp when the current throttle period expires.
+
 ## 1.1.0
 
 * Add support for multiple throttles.

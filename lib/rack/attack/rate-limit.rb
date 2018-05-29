@@ -53,6 +53,7 @@ module Rack
         throttle_data = throttle_data_closest_to_limit(env)
         headers['X-RateLimit-Limit']      = rate_limit_limit(throttle_data).to_s
         headers['X-RateLimit-Remaining']  = rate_limit_remaining(throttle_data).to_s
+        headers['X-RateLimit-Reset']      = rate_limit_reset(throttle_data).to_s
         headers
       end
 
@@ -74,6 +75,17 @@ module Rack
       # Returns Fixnum
       def rate_limit_remaining(throttle_data)
         rate_limit_limit(throttle_data) - throttle_data[:count]
+      end
+
+      # RateLimit timestamp when the current period expires resets from Rack::Attack
+      #
+      # env - Hash
+      #
+      # Returns Fixnum
+      def rate_limit_reset(throttle_data)
+        now = Time.now.to_i
+        throttle_period = throttle_data[:period]
+        now + (throttle_period - now % throttle_period)
       end
 
       # Rate Limit available method for Rack::Attack provider
